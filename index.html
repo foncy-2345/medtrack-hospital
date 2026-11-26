@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MEDTRACK</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,sans-serif;background:#f2f7fc;color:#17324d}
+header{padding:28px 20px;color:white;background:linear-gradient(120deg,#073c68,#078bd1)}
+header h1{margin:0;font-size:27px}
+header p{margin:8px 0 0;font-size:13px}
+main{padding:16px;max-width:900px;margin:auto}
+.stats{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+.card{background:white;padding:16px;border-radius:15px;box-shadow:0 3px 12px #1234}
+.card small{color:#71869a}
+.card h2{margin:8px 0 0;font-size:27px}
+button{border:0;border-radius:10px;padding:11px 14px;background:#087fc5;color:white;font-weight:bold}
+.add{width:100%;margin:15px 0}
+input,select{width:100%;padding:12px;border:1px solid #dce6ef;border-radius:10px;margin:6px 0 12px;background:white}
+.item{background:white;padding:15px;border-radius:14px;margin:10px 0;box-shadow:0 2px 9px #1232}
+.item h3{margin:0 0 8px}
+.item p{font-size:12px;color:#71869a;margin:5px 0}
+.actions{display:flex;gap:7px;flex-wrap:wrap;margin-top:10px}
+.actions button{font-size:11px;padding:8px}
+.green{background:#159b68}.orange{background:#e89520}.red{background:#d94b55}
+#form{display:none;background:white;padding:16px;border-radius:15px;margin:12px 0}
+</style>
+</head>
+<body>
+<header>
+<h1>✚ MEDTRACK</h1>
+<p>ระบบติดตามและบริหารจัดการอุปกรณ์ทางการแพทย์</p>
+</header>
+
+<main>
+<div class="stats">
+<div class="card"><small>อุปกรณ์ทั้งหมด</small><h2 id="total">0</h2></div>
+<div class="card"><small>พร้อมใช้งาน</small><h2 id="ready">0</h2></div>
+<div class="card"><small>กำลังยืม</small><h2 id="borrowed">0</h2></div>
+<div class="card"><small>สูญหาย</small><h2 id="missing">0</h2></div>
+</div>
+
+<button class="add" onclick="showForm()">＋ เพิ่มอุปกรณ์</button>
+
+<div id="form">
+<h3>ข้อมูลอุปกรณ์</h3>
+<input id="name" placeholder="ชื่ออุปกรณ์">
+<input id="code" placeholder="รหัสอุปกรณ์">
+<input id="location" placeholder="แผนก / ตำแหน่ง">
+<select id="status">
+<option>พร้อมใช้งาน</option>
+<option>กำลังยืม</option>
+<option>กำลังซ่อม</option>
+<option>สูญหาย</option>
+</select>
+<input id="holder" placeholder="ชื่อผู้ยืม / ผู้รับผิดชอบ">
+<button onclick="saveDevice()">บันทึก</button>
+<button onclick="hideForm()" style="background:#8799a8">ยกเลิก</button>
+</div>
+
+<input id="search" placeholder="🔎 ค้นหาอุปกรณ์..." oninput="render()">
+<h3>รายการอุปกรณ์</h3>
+<div id="list"></div>
+</main>
+
+<script>
+let devices=JSON.parse(localStorage.getItem("medtrack")||"[]");
+
+function save(){
+localStorage.setItem("medtrack",JSON.stringify(devices));
+render();
+}
+
+function showForm(){
+document.getElementById("form").style.display="block";
+}
+
+function hideForm(){
+document.getElementById("form").style.display="none";
+}
+
+function saveDevice(){
+let name=document.getElementById("name").value.trim();
+let code=document.getElementById("code").value.trim();
+let location=document.getElementById("location").value.trim();
+if(!name||!code||!location){
+alert("กรุณากรอกชื่อ รหัส และตำแหน่งอุปกรณ์");
+return;
+}
+if(devices.some(d=>d.code.toLowerCase()===code.toLowerCase())){
+alert("รหัสอุปกรณ์นี้มีอยู่แล้ว");
+return;
+}
+devices.push({
+id:Date.now(),
+name,code,location,
+status:document.getElementById("status").value,
+holder:document.getElementById("holder").value
+});
+["name","code","location","holder"].forEach(id=>document.getElementById(id).value="");
+hideForm();
+save();
+}
+
+function changeStatus(id,status){
+let d=devices.find(x=>x.id===id);
+if(!d)return;
+d.status=status;
+if(status==="พร้อมใช้งาน")d.holder="";
+save();
+}
+
+function removeDevice(id){
+if(!confirm("ต้องการลบอุปกรณ์นี้หรือไม่?"))return;
+devices=devices.filter(d=>d.id!==id);
+save();
+}
+
+function render(){
+let q=document.getElementById("search").value.toLowerCase();
+document.getElementById("total").textContent=devices.length;
+document.getElementById("ready").textContent=devices.filter(d=>d.status==="พร้อมใช้งาน").length;
+document.getElementById("borrowed").textContent=devices.filter(d=>d.status==="กำลังยืม").length;
+document.getElementById("missing").textContent=devices.filter(d=>d.status==="สูญหาย").length;
+
+let filtered=devices.filter(d=>
+[d.name,d.code,d.location,d.holder].join(" ").toLowerCase().includes(q)
+);
+
+document.getElementById("list").innerHTML=filtered.map(d=>`
+<div class="item">
+<h3>🩺 ${escapeHTML(d.name)}</h3>
+<p>รหัส: ${escapeHTML(d.code)}</p>
+<p>ตำแหน่ง: ${escapeHTML(d.location)}</p>
+<p>ผู้รับผิดชอบ: ${escapeHTML(d.holder||"-")}</p>
+<p>สถานะ: <b>${escapeHTML(d.status)}</b></p>
+<div class="actions">
+<button class="green" onclick="changeStatus(${d.id},'พร้อมใช้งาน')">คืน / พร้อมใช้</button>
+<button class="orange" onclick="changeStatus(${d.id},'กำลังยืม')">ยืมอุปกรณ์</button>
+<button onclick="changeStatus(${d.id},'กำลังซ่อม')">ส่งซ่อม</button>
+<button class="red" onclick="removeDevice(${d.id})">ลบ</button>
+</div>
+</div>`).join("")||"<p>ไม่พบรายการอุปกรณ์</p>";
+}
+
+function escapeHTML(s){
+return String(s??"").replace(/[&<>"']/g,c=>({
+"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
+}[c]));
+}
+
+render();
+</script>
+</body>
+</html>
