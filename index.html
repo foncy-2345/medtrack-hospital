@@ -3,153 +3,242 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>MEDTRACK</title>
+<title>MEDTRACK Smart Hospital</title>
 <style>
 *{box-sizing:border-box}
-body{margin:0;font-family:Arial,sans-serif;background:#f2f7fc;color:#17324d}
-header{padding:28px 20px;color:white;background:linear-gradient(120deg,#073c68,#078bd1)}
-header h1{margin:0;font-size:27px}
-header p{margin:8px 0 0;font-size:13px}
-main{padding:16px;max-width:900px;margin:auto}
-.stats{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
-.card{background:white;padding:16px;border-radius:15px;box-shadow:0 3px 12px #1234}
-.card small{color:#71869a}
-.card h2{margin:8px 0 0;font-size:27px}
-button{border:0;border-radius:10px;padding:11px 14px;background:#087fc5;color:white;font-weight:bold}
-.add{width:100%;margin:15px 0}
-input,select{width:100%;padding:12px;border:1px solid #dce6ef;border-radius:10px;margin:6px 0 12px;background:white}
-.item{background:white;padding:15px;border-radius:14px;margin:10px 0;box-shadow:0 2px 9px #1232}
-.item h3{margin:0 0 8px}
-.item p{font-size:12px;color:#71869a;margin:5px 0}
-.actions{display:flex;gap:7px;flex-wrap:wrap;margin-top:10px}
-.actions button{font-size:11px;padding:8px}
-.green{background:#159b68}.orange{background:#e89520}.red{background:#d94b55}
-#form{display:none;background:white;padding:16px;border-radius:15px;margin:12px 0}
+body{margin:0;background:#f0f6fc;color:#183653;font-family:Arial,sans-serif}
+header{
+ color:white;padding:25px 20px 30px;
+ background:linear-gradient(90deg,#063c69dd,#078acbdd),
+ url('https://images.unsplash.com/photo-1586773860418-d37222d8fce3?w=1200') center/cover;
+ border-radius:0 0 25px 25px
+}
+.brand{font-size:27px;font-weight:bold}
+header p{font-size:13px;line-height:1.7}
+.hero-img{
+ width:100%;height:145px;object-fit:cover;
+ border-radius:18px;margin-top:15px;
+ border:2px solid #ffffff70
+}
+main{max-width:950px;margin:auto;padding:17px}
+.welcome{font-size:18px;font-weight:bold;margin:5px 0}
+.sub{font-size:12px;color:#8094a8;margin-bottom:15px}
+.stats{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+.card{
+ background:white;border-radius:18px;padding:16px;
+ box-shadow:0 5px 15px #18365312;
+ border:1px solid #e7eff7
+}
+.card-icon{font-size:25px}
+.card small{display:block;color:#8193a5;margin-top:9px}
+.card strong{display:block;font-size:29px;margin-top:4px}
+.blue{border-bottom:4px solid #168bd0}
+.green{border-bottom:4px solid #20ad80}
+.orange{border-bottom:4px solid #f1a33d}
+.red{border-bottom:4px solid #e65b68}
+.section{margin-top:24px}
+.section h3{font-size:17px;margin:0 0 13px}
+button{border:0;border-radius:11px;padding:12px;font-weight:bold;cursor:pointer}
+.add{width:100%;background:linear-gradient(90deg,#087bc3,#16a7d2);color:white;margin:17px 0}
+.search{width:100%;padding:14px;border:1px solid #dce7f0;border-radius:13px;font-size:14px;background:white}
+.filters{display:flex;gap:7px;overflow-x:auto;margin-top:12px}
+.filter{background:white;color:#607b91;border:1px solid #dce7f0;white-space:nowrap}
+.filter.active{background:#087fc5;color:white}
+.item{
+ background:white;border-radius:17px;padding:15px;
+ margin-bottom:12px;box-shadow:0 4px 14px #18365310;
+ display:flex;gap:12px;align-items:flex-start
+}
+.item-img{width:67px;height:67px;border-radius:13px;object-fit:cover;background:#e8f4fc}
+.info{flex:1;min-width:0}
+.info h4{margin:2px 0 7px;font-size:14px}
+.info p{margin:4px 0;color:#8193a5;font-size:11px;line-height:1.6}
+.badge{display:inline-block;border-radius:20px;padding:5px 9px;font-size:10px;font-weight:bold}
+.available{background:#e3f8ef;color:#139665}
+.borrowed{background:#fff1dd;color:#d58b1e}
+.missing{background:#ffe7e9;color:#d84c59}
+.repair{background:#e7efff;color:#4777ce}
+.actions{display:flex;flex-wrap:wrap;gap:6px;margin-top:9px}
+.actions button{font-size:10px;padding:8px}
+.btn-green{background:#e3f8ef;color:#159568}
+.btn-blue{background:#e7f2ff;color:#087fc5}
+.btn-red{background:#ffe7e9;color:#d84c59}
+#form{display:none;background:white;padding:18px;border-radius:18px;margin:15px 0;box-shadow:0 5px 18px #18365312}
+#form input,#form select{width:100%;padding:12px;border:1px solid #dce7f0;border-radius:10px;margin:6px 0 12px;font-size:14px}
+#form label{font-size:12px;color:#70879b}
+.save{background:#087fc5;color:white}
+.cancel{background:#edf2f7;color:#607b91}
+.empty{text-align:center;padding:28px;color:#8da0b2;background:white;border-radius:15px}
+footer{text-align:center;color:#91a5b7;font-size:11px;padding:25px}
+@media(min-width:650px){.stats{grid-template-columns:repeat(4,1fr)}}
 </style>
 </head>
 <body>
+
 <header>
-<h1>✚ MEDTRACK</h1>
-<p>ระบบติดตามและบริหารจัดการอุปกรณ์ทางการแพทย์</p>
+ <div class="brand">✚ MEDTRACK</div>
+ <p>SMART HOSPITAL<br>ระบบติดตามและบริหารจัดการอุปกรณ์ทางการแพทย์</p>
+ <img class="hero-img"
+ src="https://images.unsplash.com/photo-1584982751601-97dcc096659c?w=1000"
+ alt="บุคลากรทางการแพทย์ในโรงพยาบาล">
 </header>
 
 <main>
-<div class="stats">
-<div class="card"><small>อุปกรณ์ทั้งหมด</small><h2 id="total">0</h2></div>
-<div class="card"><small>พร้อมใช้งาน</small><h2 id="ready">0</h2></div>
-<div class="card"><small>กำลังยืม</small><h2 id="borrowed">0</h2></div>
-<div class="card"><small>สูญหาย</small><h2 id="missing">0</h2></div>
-</div>
+ <div class="welcome">สวัสดี 👋 เจ้าหน้าที่โรงพยาบาล</div>
+ <div class="sub">ภาพรวมการจัดการอุปกรณ์ทางการแพทย์</div>
 
-<button class="add" onclick="showForm()">＋ เพิ่มอุปกรณ์</button>
+ <div class="stats">
+  <div class="card blue"><div class="card-icon">🩺</div><small>อุปกรณ์ทั้งหมด</small><strong id="total">0</strong></div>
+  <div class="card green"><div class="card-icon">✅</div><small>พร้อมใช้งาน</small><strong id="ready">0</strong></div>
+  <div class="card orange"><div class="card-icon">📤</div><small>กำลังยืม</small><strong id="borrowed">0</strong></div>
+  <div class="card red"><div class="card-icon">🔍</div><small>สูญหาย / ไม่พบ</small><strong id="missing">0</strong></div>
+ </div>
 
-<div id="form">
-<h3>ข้อมูลอุปกรณ์</h3>
-<input id="name" placeholder="ชื่ออุปกรณ์">
-<input id="code" placeholder="รหัสอุปกรณ์">
-<input id="location" placeholder="แผนก / ตำแหน่ง">
-<select id="status">
-<option>พร้อมใช้งาน</option>
-<option>กำลังยืม</option>
-<option>กำลังซ่อม</option>
-<option>สูญหาย</option>
-</select>
-<input id="holder" placeholder="ชื่อผู้ยืม / ผู้รับผิดชอบ">
-<button onclick="saveDevice()">บันทึก</button>
-<button onclick="hideForm()" style="background:#8799a8">ยกเลิก</button>
-</div>
+ <button class="add" onclick="showForm()">＋ เพิ่มอุปกรณ์ทางการแพทย์</button>
 
-<input id="search" placeholder="🔎 ค้นหาอุปกรณ์..." oninput="render()">
-<h3>รายการอุปกรณ์</h3>
-<div id="list"></div>
+ <div id="form">
+  <h3 id="formTitle">📋 เพิ่มข้อมูลอุปกรณ์</h3>
+  <input type="hidden" id="editId">
+  <label>ชื่ออุปกรณ์</label><input id="name" placeholder="เช่น เครื่องวัดความดัน">
+  <label>รหัสอุปกรณ์</label><input id="code" placeholder="เช่น MED-001">
+  <label>ประเภทอุปกรณ์</label><input id="type" placeholder="เช่น อุปกรณ์ตรวจวัด">
+  <label>แผนก / ตำแหน่ง</label><input id="location" placeholder="เช่น แผนกฉุกเฉิน">
+  <label>สถานะ</label>
+  <select id="status">
+   <option>พร้อมใช้งาน</option>
+   <option>กำลังยืม</option>
+   <option>กำลังซ่อม</option>
+   <option>สูญหาย</option>
+  </select>
+  <label>ชื่อผู้รับผิดชอบ / ผู้ยืม</label>
+  <input id="holder" placeholder="ชื่อเจ้าหน้าที่">
+  <button class="save" onclick="saveDevice()">บันทึกข้อมูล</button>
+  <button class="cancel" onclick="hideForm()">ยกเลิก</button>
+ </div>
+
+ <div class="section">
+  <h3>🔎 ค้นหาอุปกรณ์</h3>
+  <input class="search" id="search" placeholder="ค้นหาชื่อ รหัส หรือแผนก..." oninput="render()">
+  <div class="filters">
+   <button class="filter active" onclick="setFilter('ทั้งหมด',this)">ทั้งหมด</button>
+   <button class="filter" onclick="setFilter('พร้อมใช้งาน',this)">พร้อมใช้</button>
+   <button class="filter" onclick="setFilter('กำลังยืม',this)">กำลังยืม</button>
+   <button class="filter" onclick="setFilter('กำลังซ่อม',this)">กำลังซ่อม</button>
+   <button class="filter" onclick="setFilter('สูญหาย',this)">สูญหาย</button>
+  </div>
+ </div>
+
+ <div class="section">
+  <h3>📦 รายการอุปกรณ์</h3>
+  <div id="list"></div>
+ </div>
 </main>
+
+<footer>MEDTRACK SMART HOSPITAL<br>Medical Equipment Management System</footer>
 
 <script>
 let devices=JSON.parse(localStorage.getItem("medtrack")||"[]");
+let currentFilter="ทั้งหมด";
 
 function save(){
-localStorage.setItem("medtrack",JSON.stringify(devices));
-render();
+ localStorage.setItem("medtrack",JSON.stringify(devices));
+ render();
 }
-
 function showForm(){
-document.getElementById("form").style.display="block";
+ document.getElementById("form").style.display="block";
+ document.getElementById("form").scrollIntoView({behavior:"smooth"});
 }
-
 function hideForm(){
-document.getElementById("form").style.display="none";
+ document.getElementById("form").style.display="none";
 }
-
+function setFilter(value,btn){
+ currentFilter=value;
+ document.querySelectorAll(".filter").forEach(x=>x.classList.remove("active"));
+ btn.classList.add("active");
+ render();
+}
 function saveDevice(){
-let name=document.getElementById("name").value.trim();
-let code=document.getElementById("code").value.trim();
-let location=document.getElementById("location").value.trim();
-if(!name||!code||!location){
-alert("กรุณากรอกชื่อ รหัส และตำแหน่งอุปกรณ์");
-return;
-}
-if(devices.some(d=>d.code.toLowerCase()===code.toLowerCase())){
-alert("รหัสอุปกรณ์นี้มีอยู่แล้ว");
-return;
-}
-devices.push({
-id:Date.now(),
-name,code,location,
-status:document.getElementById("status").value,
-holder:document.getElementById("holder").value
-});
-["name","code","location","holder"].forEach(id=>document.getElementById(id).value="");
-hideForm();
-save();
-}
+ let id=document.getElementById("editId").value;
+ let name=document.getElementById("name").value.trim();
+ let code=document.getElementById("code").value.trim();
+ let type=document.getElementById("type").value.trim();
+ let location=document.getElementById("location").value.trim();
+ let status=document.getElementById("status").value;
+ let holder=document.getElementById("holder").value.trim();
 
+ if(!name||!code||!location){
+  alert("กรุณากรอกชื่อ รหัส และแผนก");
+  return;
+ }
+ if(devices.some(d=>d.code.toLowerCase()===code.toLowerCase()&&String(d.id)!==id)){
+  alert("รหัสอุปกรณ์นี้มีอยู่แล้ว");
+  return;
+ }
+ if(id){
+  let d=devices.find(x=>String(x.id)===id);
+  Object.assign(d,{name,code,type,location,status,holder});
+ }else{
+  devices.push({id:Date.now(),name,code,type,location,status,holder});
+ }
+ document.getElementById("editId").value="";
+ ["name","code","type","location","holder"].forEach(x=>document.getElementById(x).value="");
+ document.getElementById("formTitle").textContent="📋 เพิ่มข้อมูลอุปกรณ์";
+ hideForm();
+ save();
+}
+function editDevice(id){
+ let d=devices.find(x=>x.id===id);
+ if(!d)return;
+ document.getElementById("editId").value=d.id;
+ ["name","code","type","location","status","holder"].forEach(x=>document.getElementById(x).value=d[x]||"");
+ document.getElementById("formTitle").textContent="✏️ แก้ไขข้อมูลอุปกรณ์";
+ showForm();
+}
 function changeStatus(id,status){
-let d=devices.find(x=>x.id===id);
-if(!d)return;
-d.status=status;
-if(status==="พร้อมใช้งาน")d.holder="";
-save();
+ let d=devices.find(x=>x.id===id);
+ if(!d)return;
+ d.status=status;
+ if(status==="พร้อมใช้งาน")d.holder="";
+ save();
 }
-
 function removeDevice(id){
-if(!confirm("ต้องการลบอุปกรณ์นี้หรือไม่?"))return;
-devices=devices.filter(d=>d.id!==id);
-save();
+ if(!confirm("ยืนยันการลบอุปกรณ์นี้?"))return;
+ devices=devices.filter(x=>x.id!==id);
+ save();
 }
-
+function safe(s){
+ return String(s||"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+}
 function render(){
-let q=document.getElementById("search").value.toLowerCase();
-document.getElementById("total").textContent=devices.length;
-document.getElementById("ready").textContent=devices.filter(d=>d.status==="พร้อมใช้งาน").length;
-document.getElementById("borrowed").textContent=devices.filter(d=>d.status==="กำลังยืม").length;
-document.getElementById("missing").textContent=devices.filter(d=>d.status==="สูญหาย").length;
+ document.getElementById("total").textContent=devices.length;
+ document.getElementById("ready").textContent=devices.filter(x=>x.status==="พร้อมใช้งาน").length;
+ document.getElementById("borrowed").textContent=devices.filter(x=>x.status==="กำลังยืม").length;
+ document.getElementById("missing").textContent=devices.filter(x=>x.status==="สูญหาย").length;
 
-let filtered=devices.filter(d=>
-[d.name,d.code,d.location,d.holder].join(" ").toLowerCase().includes(q)
-);
-
-document.getElementById("list").innerHTML=filtered.map(d=>`
-<div class="item">
-<h3>🩺 ${escapeHTML(d.name)}</h3>
-<p>รหัส: ${escapeHTML(d.code)}</p>
-<p>ตำแหน่ง: ${escapeHTML(d.location)}</p>
-<p>ผู้รับผิดชอบ: ${escapeHTML(d.holder||"-")}</p>
-<p>สถานะ: <b>${escapeHTML(d.status)}</b></p>
-<div class="actions">
-<button class="green" onclick="changeStatus(${d.id},'พร้อมใช้งาน')">คืน / พร้อมใช้</button>
-<button class="orange" onclick="changeStatus(${d.id},'กำลังยืม')">ยืมอุปกรณ์</button>
-<button onclick="changeStatus(${d.id},'กำลังซ่อม')">ส่งซ่อม</button>
-<button class="red" onclick="removeDevice(${d.id})">ลบ</button>
-</div>
-</div>`).join("")||"<p>ไม่พบรายการอุปกรณ์</p>";
+ let q=document.getElementById("search").value.toLowerCase();
+ let rows=devices.filter(d=>
+ (currentFilter==="ทั้งหมด"||d.status===currentFilter)&&
+ [d.name,d.code,d.type,d.location,d.holder].join(" ").toLowerCase().includes(q)
+ );
+ document.getElementById("list").innerHTML=rows.map(d=>{
+ let cls=d.status==="พร้อมใช้งาน"?"available":d.status==="กำลังยืม"?"borrowed":d.status==="สูญหาย"?"missing":"repair";
+ return `<div class="item">
+ <img class="item-img" src="https://images.unsplash.com/photo-1584982751601-97dcc096659c?w=200" alt="อุปกรณ์ทางการแพทย์">
+ <div class="info">
+ <h4>${safe(d.name)}</h4>
+ <p>รหัส: ${safe(d.code)} · ${safe(d.type)}</p>
+ <p>📍 ${safe(d.location)}</p>
+ <p>👤 ${safe(d.holder||"ไม่มีผู้ยืม")}</p>
+ <span class="badge ${cls}">${safe(d.status)}</span>
+ <div class="actions">
+ <button class="btn-green" onclick="changeStatus(${d.id},'พร้อมใช้งาน')">คืนอุปกรณ์</button>
+ <button class="btn-blue" onclick="changeStatus(${d.id},'กำลังยืม')">ยืม</button>
+ <button class="btn-blue" onclick="changeStatus(${d.id},'กำลังซ่อม')">ส่งซ่อม</button>
+ <button class="btn-blue" onclick="editDevice(${d.id})">แก้ไข</button>
+ <button class="btn-red" onclick="removeDevice(${d.id})">ลบ</button>
+ </div></div></div>`;
+ }).join("")||'<div class="empty">📦 ไม่พบรายการอุปกรณ์</div>';
 }
-
-function escapeHTML(s){
-return String(s??"").replace(/[&<>"']/g,c=>({
-"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
-}[c]));
-}
-
 render();
 </script>
 </body>
