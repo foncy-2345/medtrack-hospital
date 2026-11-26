@@ -228,6 +228,22 @@ function removeDevice(id){
 }
 function safe(s){
  return String(s||"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+}function imageFor(d){
+ const images={
+ "MED-001":"https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=400",
+ "MED-002":"https://images.unsplash.com/photo-1615486511484-92e172cc4fe0?w=400",
+ "MED-003":"https://images.unsplash.com/photo-1584982751601-97dcc096659c?w=400",
+ "MED-004":"https://images.unsplash.com/photo-1584515933487-779824d29309?w=400",
+ "MED-005":"https://images.unsplash.com/photo-1583912267550-d7c9f1b5f4b5?w=400",
+ "MED-006":"https://images.unsplash.com/photo-1511174511562-5f7f18b874f8?w=400",
+ "MED-007":"https://images.unsplash.com/photo-1581594693702-fbdc51b2763b?w=400",
+ "MED-008":"https://images.unsplash.com/photo-1504439904031-93ded9f93e4e?w=400",
+ "MED-009":"https://images.unsplash.com/photo-1559757175-0eb30cd8c063?w=400",
+ "MED-010":"https://images.unsplash.com/photo-1584634731339-252c581abfc5?w=400",
+ "MED-011":"https://images.unsplash.com/photo-1586773860418-d37222d8fce3?w=400",
+ "MED-012":"https://images.unsplash.com/photo-1584982751601-97dcc096659c?w=400"
+ };
+ return images[d.code] || "";
 }
 function render(){
  document.getElementById("total").textContent=devices.length;
@@ -243,7 +259,7 @@ function render(){
  document.getElementById("list").innerHTML=rows.map(d=>{
  let cls=d.status==="พร้อมใช้งาน"?"available":d.status==="กำลังยืม"?"borrowed":d.status==="สูญหาย"?"missing":"repair";
  return `<div class="item">
- <img class="item-img" src="https://images.unsplash.com/photo-1584982751601-97dcc096659c?w=200" alt="อุปกรณ์ทางการแพทย์">
+ <img class="item-img" src="${imageFor(d)}" alt="${safe(d.name)}" onerror="this.style.display='none'">
  <div class="info">
  <h4>${safe(d.name)}</h4>
  <p>รหัส: ${safe(d.code)} · ${safe(d.type)}</p>
