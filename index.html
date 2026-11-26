@@ -137,7 +137,27 @@ footer{text-align:center;color:#91a5b7;font-size:11px;padding:25px}
 <footer>MEDTRACK SMART HOSPITAL<br>Medical Equipment Management System</footer>
 
 <script>
-let devices=JSON.parse(localStorage.getItem("medtrack")||"[]");
+const demoDevices = [
+{id:1001,name:"เครื่องวัดความดันโลหิต",code:"MED-001",type:"อุปกรณ์ตรวจวัด",location:"แผนกผู้ป่วยนอก",status:"พร้อมใช้งาน",holder:""},
+{id:1002,name:"เครื่องวัดออกซิเจนปลายนิ้ว",code:"MED-002",type:"อุปกรณ์ตรวจวัด",location:"แผนกฉุกเฉิน",status:"กำลังยืม",holder:"พยาบาลเวรเช้า"},
+{id:1003,name:"เครื่องช่วยหายใจ",code:"MED-003",type:"อุปกรณ์ช่วยชีวิต",location:"หอผู้ป่วยวิกฤต ICU",status:"พร้อมใช้งาน",holder:""},
+{id:1004,name:"เครื่องกระตุกหัวใจไฟฟ้า",code:"MED-004",type:"อุปกรณ์ช่วยชีวิต",location:"แผนกฉุกเฉิน",status:"พร้อมใช้งาน",holder:""},
+{id:1005,name:"เครื่องควบคุมการให้สารน้ำ",code:"MED-005",type:"อุปกรณ์รักษา",location:"ห้องซ่อมบำรุง",status:"กำลังซ่อม",holder:"ช่างเทคนิค"},
+{id:1006,name:"เครื่องเอกซเรย์เคลื่อนที่",code:"MED-006",type:"อุปกรณ์วินิจฉัย",location:"แผนกรังสีวิทยา",status:"กำลังยืม",holder:"เจ้าหน้าที่รังสี"},
+{id:1007,name:"เครื่องดูดเสมหะ",code:"MED-007",type:"อุปกรณ์รักษา",location:"หอผู้ป่วยอายุรกรรม",status:"พร้อมใช้งาน",holder:""},
+{id:1008,name:"เตียงผู้ป่วยไฟฟ้า",code:"MED-008",type:"อุปกรณ์ผู้ป่วย",location:"หอผู้ป่วยศัลยกรรม",status:"พร้อมใช้งาน",holder:""},
+{id:1009,name:"เครื่องตรวจคลื่นไฟฟ้าหัวใจ ECG",code:"MED-009",type:"อุปกรณ์ตรวจวินิจฉัย",location:"แผนกหัวใจ",status:"สูญหาย",holder:""},
+{id:1010,name:"เครื่องวัดอุณหภูมิอินฟราเรด",code:"MED-010",type:"อุปกรณ์ตรวจวัด",location:"แผนกผู้ป่วยนอก",status:"พร้อมใช้งาน",holder:""},
+{id:1011,name:"รถเข็นผู้ป่วย",code:"MED-011",type:"อุปกรณ์เคลื่อนย้าย",location:"แผนกผู้ป่วยใน",status:"กำลังยืม",holder:"เจ้าหน้าที่เปล"},
+{id:1012,name:"เครื่องติดตามสัญญาณชีพ",code:"MED-012",type:"อุปกรณ์ตรวจวัด",location:"หอผู้ป่วยวิกฤต ICU",status:"กำลังซ่อม",holder:"ช่างเทคนิค"}
+];
+
+let devices = JSON.parse(localStorage.getItem("medtrack") || "null");
+
+if (!devices) {
+    devices = demoDevices;
+    localStorage.setItem("medtrack", JSON.stringify(devices));
+}
 let currentFilter="ทั้งหมด";
 
 function save(){
